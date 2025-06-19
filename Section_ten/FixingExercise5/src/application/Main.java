@@ -5,6 +5,7 @@ import entities.Employer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import static java.lang.System.*;
 
@@ -21,6 +22,12 @@ public class Main {
             out.print("Id: ");
             int id = sc.nextInt();
 
+            while(hasId(employees, id)) {
+                out.println("\nThis ID does not exist! Try again");
+                out.print("Id: ");
+                id = sc.nextInt();
+            }
+
             out.print("Name: ");
             String name = sc.next();
 
@@ -30,27 +37,38 @@ public class Main {
             employees.add(new Employer(id, name, salary));
         }
 
-        out.print("\nEnter the employee ID that will have salary increase: ");
-        int id = sc.nextInt();
-        Employer choiceEmployer = employees
-                .stream()
-                .filter(x -> x.getId() == id)
-                .findFirst()
-                .orElse(null);
+        out.println();
 
-        if(choiceEmployer == null) {
-            out.println("This ID does not exist!");
-        }
+        Employer choiceEmployer;
 
-        else {
-            out.print("Enter the percent: ");
-            double percent = sc.nextDouble();
-            choiceEmployer.increaseSalary(percent);
-        }
+        do {
+            out.print("Enter the employee ID that will have salary increase: ");
+            int id = sc.nextInt();
+           choiceEmployer  = employees
+                    .stream()
+                    .filter(x -> x.getId() == id)
+                    .findFirst()
+                    .orElse(null);
+        } while (choiceEmployer == null);
+
+        out.print("Enter the percent: ");
+        double percent = sc.nextDouble();
+        choiceEmployer.increaseSalary(percent);
+
 
         out.println("\nList of employees:");
         for (Employer employ : employees) {
             out.println(employ);
         }
+    }
+
+    static boolean hasId(List<Employer> employees, int id) {
+        Employer employ = employees
+                .stream()
+                .filter(x -> x.getId() == id)
+                .findFirst()
+                .orElse(null);
+
+        return employ != null;
     }
 }
