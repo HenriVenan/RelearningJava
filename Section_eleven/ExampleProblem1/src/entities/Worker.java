@@ -5,6 +5,8 @@ import entities.enums.WorkLevel;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.System.out;
+
 public class Worker {
     private String name;
     private WorkLevel workLevel;
@@ -35,6 +37,16 @@ public class Worker {
                 .filter(x -> x.getDate() == contract.getDate())
                 .findFirst()
                 .ifPresent(fContract -> hourContracts.remove(fContract));
+    }
+
+    public double income(List<HourContract> contract) {
+        double calc = 0;
+
+        for (HourContract hourContract : contract) {
+            calc += hourContract.totalValue();
+        }
+
+        return  calc;
     }
 
     public String getName() {

@@ -58,18 +58,22 @@ public class Main {
         }
 
         out.print("\nEntre com o mês e ano para calcular o ganho do funcionário (MM/yyyy):");
-        String dates = sc.next();
+        String date = sc.next();
+        String formattedDate = "01/" + date;
 
-        out.println("Nome: " + worker.getName());
+        out.println("\nNome: " + worker.getName());
         out.println("Departamento: " + worker.getDepartment().getDepartment());
 
-//        double calc = worker
-//                .getHourContracts()
-//                .stream()
-//                .filter(x -> x.getDate() == LocalDate.parse(dates, format))
-//                .reduce(worker.getBaseSalary(), (a, b) -> a.totalValue() + b.totalValue());
+        double calc = worker.getBaseSalary() + worker.income(filterList(worker, format, formattedDate));
+        out.println("Ganhos de " + date + ": " + calc);
+    }
 
-
-        out.println("Ganhos de " + dates + ": ");
+    static List<HourContract> filterList(Worker list, DateTimeFormatter format, String formattedDate) {
+        return list
+                .getHourContracts()
+                .stream()
+                .filter(x -> x.getDate().getMonth() == LocalDate.parse(formattedDate, format).getMonth())
+                .filter(x -> x.getDate().getYear() == LocalDate.parse(formattedDate, format).getYear())
+                .toList();
     }
 }
