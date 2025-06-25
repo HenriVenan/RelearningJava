@@ -2,27 +2,27 @@ package entities;
 
 import entities.enums.WorkLevel;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Worker {
     private String name;
     private WorkLevel workLevel;
     private double baseSalary;
     private Department department;
-    private List<HourContract> hourContracts;
+    private ArrayList<HourContract> hourContracts;
 
     public Worker(
             String name,
             WorkLevel workLevel,
             double baseSalary,
-            Department department,
-            List<HourContract> hourContracts
+            Department department
     ) {
         this.name = name;
         this.workLevel = workLevel;
         this.baseSalary = baseSalary;
         this.department = department;
+        this.hourContracts = new ArrayList<>();
     }
 
     public void addContract(HourContract contract) {

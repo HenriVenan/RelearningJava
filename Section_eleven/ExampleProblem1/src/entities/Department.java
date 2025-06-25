@@ -1,13 +1,13 @@
 package entities;
 
 public class Department {
-    private String department;
+    private final String name;
 
-    public String getDepartment() {
-        return department;
+    public Department(String department) {
+        this.name = department;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
+    public String getDepartment() {
+        return name;
     }
 }
