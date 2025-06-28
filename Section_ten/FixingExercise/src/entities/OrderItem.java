@@ -1,16 +1,18 @@
 package entities;
 
+import java.util.ArrayList;
+
 public class OrderItem {
     private int quantity;
-    private double price;
+    private Product product;
 
-    public OrderItem(int quantity, double price) {
+    public OrderItem(int quantity, Product product) {
         this.quantity = quantity;
-        this.price = price;
+        this.product = product;
     }
 
     public double subTotal() {
-        return quantity * price;
+        return quantity * product.getPrice();
     }
 
     public int getQuantity() {
@@ -21,11 +23,11 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public double getPrice() {
-        return price;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }

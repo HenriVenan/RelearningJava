@@ -1,11 +1,17 @@
 package entities;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Client {
     private String name;
     private String email;
-    private Date birthDate;
+    private LocalDate birthDate;
+
+    public Client(String name, String email, LocalDate birthDate) {
+        this.name = name;
+        this.email = email;
+        this.birthDate = birthDate;
+    }
 
     public String getName() {
         return name;
@@ -23,11 +29,11 @@ public class Client {
         this.email = email;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 }
