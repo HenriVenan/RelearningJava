@@ -3,19 +3,23 @@ package application;
 import entities.ImportedProducts;
 import entities.Product;
 import entities.UsedProduct;
+import tests.MainTest;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
+
 import static java.lang.System.out;
 
 public class Main {
     public static void main(String[] args) {
+        MainTest.simulator("3",
+                "i", "Tablet", "260", "20",
+                "c", "Notebook", "1100",
+                "u", "Iphone", "400", "15/03/2017"
+        );
+
         Scanner sc = new Scanner(System.in);
 
         out.print("Enter the number of products: ");
@@ -58,7 +62,7 @@ public class Main {
             }
         }
 
-        out.println("\nPRICE TAGS: ");
+        out.println("\n\nPRICE TAGS: ");
         for (Product product : products) {
             out.print(product.priceTag() + "\n");
         }
