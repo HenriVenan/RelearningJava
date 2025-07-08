@@ -23,6 +23,8 @@ public class Main {
             out.println("\nHouve um erro!");
         } catch (InputMismatchException err) {
             out.println("\nHouve um erro!");
+        } finally {
+            out.println("Fim do programa.");
         }
     }
 }
