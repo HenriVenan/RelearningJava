@@ -1,31 +1,38 @@
 package model.entities;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
+
+import static java.lang.System.out;
 
 public class Reservation {
     private int roomNumber;
     private LocalDate checkIn;
-    private LocalDate checkout;
+    private LocalDate checkOut;
 
     public Reservation() {}
 
-    public Reservation(int roomNumber, LocalDate checkIn, LocalDate checkout) {
+    public Reservation(int roomNumber, LocalDate checkIn, LocalDate checkOut) {
         this.roomNumber = roomNumber;
         this.checkIn = checkIn;
-        this.checkout = checkout;
+        this.checkOut = checkOut;
     }
 
     public long duration() {
-        return ChronoUnit.DAYS.between(checkIn, checkout);
+        return ChronoUnit.DAYS.between(checkIn, checkOut);
     }
 
-    public void updateCheck(LocalDate checking, LocalDate checkout) {
-        this.checkIn = checking;
-        this.checkout = checkout;
+    public String updateCheck(LocalDate newCheckIn, LocalDate newCheckOut) {
+        LocalDate now = LocalDate.now();
+
+        if(newCheckIn.isAfter(now) && newCheckOut.isAfter(newCheckIn)){
+            this.checkIn = newCheckIn;
+            this.checkOut = newCheckOut;
+            return null;
+        }
+
+        return "Reservation dates for update must be future dates";
     }
 
     @Override
@@ -39,7 +46,7 @@ public class Reservation {
                 .append(", check-in: ")
                 .append(dateTimeFormatter.format(checkIn))
                 .append(", check-out: ")
-                .append(dateTimeFormatter.format(checkout))
+                .append(dateTimeFormatter.format(checkOut))
                 .append(", ")
                 .append(duration())
                 .append(" nigths");
@@ -59,7 +66,7 @@ public class Reservation {
         return checkIn;
     }
 
-    public LocalDate getCheckout() {
-        return checkout;
+    public LocalDate getCheckOut() {
+        return checkOut;
     }
 }

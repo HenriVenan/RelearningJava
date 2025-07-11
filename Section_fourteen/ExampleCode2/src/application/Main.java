@@ -5,11 +5,8 @@ import model.entities.Reservation;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.Scanner;
 
-import static java.lang.System.exit;
 import static java.lang.System.out;
 
 public class Main {
@@ -35,6 +32,7 @@ public class Main {
 
         else {
             out.println("Error in reservation: Check-out must be after Check-in date");
+            System.exit(0);
         }
 
 
@@ -46,15 +44,14 @@ public class Main {
         out.print("Check-out date (dd/MM/yyyy): ");
         LocalDate updateCheckOut = LocalDate.parse(sc.next(), dateFormatter);
 
-        LocalDate now = LocalDate.now();
+        String error = reservation.updateCheck(updateCheckIn, updateCheckOut);
 
-        if(updateCheckIn.isAfter(now) && updateCheckOut.isAfter(updateCheckIn)){
-            reservation.updateCheck(updateCheckIn, updateCheckOut);
-            out.println();
+        if(error == null) {
+            out.println(reservation);
         }
 
         else {
-            out.println("Error reservation: Reservation dates for update must be future dates");
+            out.println("Error reservation: " + error);
         }
     }
 }
