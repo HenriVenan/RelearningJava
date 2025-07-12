@@ -1,10 +1,10 @@
 package model.entities;
 
+import model.exceptions.DomainException;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-
-import static java.lang.System.out;
 
 public class Reservation {
     private int roomNumber;
@@ -13,7 +13,11 @@ public class Reservation {
 
     public Reservation() {}
 
-    public Reservation(int roomNumber, LocalDate checkIn, LocalDate checkOut) {
+    public Reservation(int roomNumber, LocalDate checkIn, LocalDate checkOut) throws DomainException {
+        if(!checkOut.isAfter(checkIn)) {
+            throw new DomainException("Check-out date must be after check-in date");
+        }
+
         this.roomNumber = roomNumber;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
@@ -23,16 +27,19 @@ public class Reservation {
         return ChronoUnit.DAYS.between(checkIn, checkOut);
     }
 
-    public String updateCheck(LocalDate newCheckIn, LocalDate newCheckOut) {
+    public void updateCheck(LocalDate newCheckIn, LocalDate newCheckOut) throws DomainException {
         LocalDate now = LocalDate.now();
 
-        if(newCheckIn.isAfter(now) && newCheckOut.isAfter(newCheckIn)){
-            this.checkIn = newCheckIn;
-            this.checkOut = newCheckOut;
-            return null;
+        if(!newCheckIn.isAfter(now)){
+            throw new DomainException("Reservation dates for update must be future dates");
         }
 
-        return "Reservation dates for update must be future dates";
+        if(!newCheckOut.isAfter(newCheckIn)) {
+            throw new DomainException("Check-out date must be after check-in date");
+        }
+
+        this.checkIn = newCheckIn;
+        this.checkOut = newCheckOut;
     }
 
     @Override
@@ -41,15 +48,15 @@ public class Reservation {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         strB
-                .append("Reservation: Room ")
-                .append(roomNumber)
-                .append(", check-in: ")
-                .append(dateTimeFormatter.format(checkIn))
-                .append(", check-out: ")
-                .append(dateTimeFormatter.format(checkOut))
-                .append(", ")
-                .append(duration())
-                .append(" nigths");
+            .append("Reservation: Room ")
+            .append(roomNumber)
+            .append(", check-in: ")
+            .append(dateTimeFormatter.format(checkIn))
+            .append(", check-out: ")
+            .append(dateTimeFormatter.format(checkOut))
+            .append(", ")
+            .append(duration())
+            .append(" nigths");
 
         return strB.toString();
     }
