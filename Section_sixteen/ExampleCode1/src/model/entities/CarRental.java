@@ -1,5 +1,7 @@
 package model.entities;
 
+import exceptions.DataException;
+
 import java.time.LocalDateTime;
 
 public class CarRental {
@@ -8,7 +10,11 @@ public class CarRental {
     private Vehicle vehicle;
     private Invoice invoice;
 
-    public CarRental(LocalDateTime start, LocalDateTime finish, Vehicle vehicle) {
+    public CarRental(LocalDateTime start, LocalDateTime finish, Vehicle vehicle) throws DataException {
+        if (finish.isBefore(start)) {
+            throw new DataException("Data de retorno deve ser depois da data de entrega");
+        }
+
         this.start = start;
         this.finish = finish;
         this.vehicle = vehicle;

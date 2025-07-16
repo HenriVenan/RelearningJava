@@ -1,11 +1,14 @@
+package application;
 
+import exceptions.DataException;
 import model.entities.CarRental;
 import model.entities.Vehicle;
 import model.services.RentalService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
+import java.time.format.DateTimeParseException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import static java.lang.System.out;
@@ -35,8 +38,7 @@ public class Main {
             out.print("Entre com o preço por dia: ");
             valuePerDay = sc.nextDouble();
 
-            Vehicle vehicle = new Vehicle(carModel);
-            carRental = new CarRental(start, finish, vehicle);
+            carRental = new CarRental(start, finish, new Vehicle(carModel));
 
             RentalService rentalService = new RentalService(valuePerHour, valuePerDay);
             rentalService.processInvoice(carRental);
@@ -45,9 +47,16 @@ public class Main {
             out.print(carRental);
         }
 
-        catch (Exception err) {
-            out.println("Houve um erro: " + Arrays.toString(err.getStackTrace()));
-            out.println("Mensagem: " + err.getMessage());
+        catch (DateTimeParseException err) {
+            out.println("Error: Insira as datas corretamente");
+        }
+
+        catch (InputMismatchException err) {
+            out.println("Error: Insira os preços corretamente");
+        }
+
+        catch (DataException err) {
+            out.println(err.getMessage());
         }
 
     }

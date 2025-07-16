@@ -1,5 +1,6 @@
 package model.services;
 
+import exceptions.DataException;
 import model.entities.CarRental;
 import model.entities.Invoice;
 
@@ -15,23 +16,24 @@ public class RentalService {
         this.pricePerDay = pricePerDay;
     }
 
-    public void processInvoice(CarRental carRental) {
-        double minutes = ChronoUnit.MINUTES.between(carRental.getStart(), carRental.getFinish());
-        double hours = minutes / 60;
+    public void processInvoice(CarRental carRental) throws DataException {
+        double hours = ((double) ChronoUnit.MINUTES.between(carRental.getStart(), carRental.getFinish())) / 60;
 
         if(hours != Math.floor(hours)) {
             hours = Math.floor(hours + 1);
         }
 
+        double basicPayment;
+
         if (hours <= 24) {
-            double basicPayment = hours * pricePerHour;
-            carRental.setInvoice(new Invoice(basicPayment, serviceTax.tax(basicPayment)));
+            basicPayment = hours * pricePerHour;
         }
 
-        if (hours > 24) {
-            double basicPayment = Math.floor(1 + (hours / 24)) * pricePerDay;
-            carRental.setInvoice(new Invoice(basicPayment, serviceTax.tax(basicPayment)));
+        else {
+            basicPayment = Math.floor(1 + (hours / 24)) * pricePerDay;
         }
+
+        carRental.setInvoice(new Invoice(basicPayment, serviceTax.tax(basicPayment)));
     }
 
     public Double getPricePerHour() {
