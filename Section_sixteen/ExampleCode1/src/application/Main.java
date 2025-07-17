@@ -3,6 +3,7 @@ package application;
 import exceptions.DataException;
 import model.entities.CarRental;
 import model.entities.Vehicle;
+import model.services.BrazilTaxService;
 import model.services.RentalService;
 
 import java.time.LocalDateTime;
@@ -40,7 +41,7 @@ public class Main {
 
             carRental = new CarRental(start, finish, new Vehicle(carModel));
 
-            RentalService rentalService = new RentalService(valuePerHour, valuePerDay);
+            RentalService rentalService = new RentalService(valuePerHour, valuePerDay, new BrazilTaxService());
             rentalService.processInvoice(carRental);
 
             out.println("\nFATURA: ");
